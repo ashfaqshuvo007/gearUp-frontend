@@ -22,7 +22,7 @@ type IOrder = {
   updatedAt: string;
 };
 
-type IUser = {
+export type IUser = {
   success: boolean;
   message: string;
   data: {
@@ -33,8 +33,8 @@ type IUser = {
     role: string;
     createdAt: string;
     updatedAt: string;
-    reviews?: IReview[];
     orders?: IOrder[];
+    reviews?: IReview[];
   };
 };
 

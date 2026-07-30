@@ -8,7 +8,7 @@ const AuthGroupLayout = (
     }
 ) => {
   return (
-    <div>
+    <div className='bg-sky-200'>
         {children}
     </div>
   )
