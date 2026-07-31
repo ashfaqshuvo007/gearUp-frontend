@@ -1,7 +1,5 @@
 "use server";
 
-import { cookies } from "next/headers";
-
 export const getGearsList = async ({
   query,
 }: {
@@ -9,8 +7,15 @@ export const getGearsList = async ({
 }) => {
   const params = new URLSearchParams();
 
-  if (query && query.searchTerm) {
-    params.set("searchTerm", query.searchTerm as string);
+  const allowedFields = ["name", "category", "brand", "price"] as const;
+
+  if (query) {
+    for (const field of allowedFields) {
+      const value = query[field];
+      if (typeof value === "string" && value.length > 0) {
+        params.set(field, value);
+      }
+    }
   }
 
   const res = await fetch(

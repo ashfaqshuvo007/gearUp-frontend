@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button'
 import { ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
+import Link from 'next/link'
 
 interface GearCardProps {
   id: string
@@ -20,7 +21,9 @@ export function GearCard({ id, title, description, image, price }: GearCardProps
         <Image
           src={image}
           alt={title}
-          fill
+          height={500}
+          width={500}
+          loading="eager"
           className="object-cover group-hover:scale-110 transition-transform duration-300"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
@@ -28,9 +31,13 @@ export function GearCard({ id, title, description, image, price }: GearCardProps
 
       {/* Content */}
       <div className="p-6">
-        <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+        <Link href="/" className="shrink-0">
+          <span className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
+
           {title}
-        </h3>
+          </span>
+        </Link>
+        
         <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
           {description}
         </p>
@@ -45,7 +52,7 @@ export function GearCard({ id, title, description, image, price }: GearCardProps
             className="bg-primary hover:bg-primary/90 text-primary-foreground gap-2"
           >
             <ShoppingCart className="h-4 w-4" />
-            Order
+            Rent Now
           </Button>
         </div>
       </div>

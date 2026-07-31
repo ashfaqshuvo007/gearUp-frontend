@@ -38,6 +38,34 @@ export type IUser = {
   };
 };
 
+export type ICategory = {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IGear = {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    name: string;
+    description?: string;
+    brand: string;
+    quantity: number;
+    price: string;
+    categoryName: string;
+    providerId: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    category: ICategory;
+  };
+};
+
 export type NavbarProps = {
   user: IUser;
 };
