@@ -30,6 +30,7 @@ export async function GearList(
               description={gear.description}
               image={gear.image}
               price={gear.price}
+              quantity={gear.quantity}
             />
         ))}
       </div>
