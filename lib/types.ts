@@ -38,6 +38,64 @@ export type IUser = {
   };
 };
 
+export type ICategory = {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IGear = {
+  success: boolean;
+  message: string;
+  data: {
+    id: string;
+    name: string;
+    description?: string;
+    brand: string;
+    quantity: number;
+    price: string;
+    categoryName: string;
+    providerId: string;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+    category: ICategory;
+  };
+};
+
 export type NavbarProps = {
   user: IUser;
 };
+
+export interface GearSpecification {
+  label: string;
+  value: string;
+}
+
+export interface GearProvider {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface GearDetailData {
+  id: string;
+  name: string;
+  description: string;
+  image: string;
+  category: string;
+  quantity: number;
+  brand: string;
+  pricePerDay: number;
+  specifications: GearSpecification[];
+  provider: GearProvider;
+  /** Dates that cannot be booked (already reserved). */
+  unavailableDates?: Date[];
+}
