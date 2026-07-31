@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export const GearImage = ({ src, alt }: { src: string; alt: string }) => {
   return (
-    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg border bg-muted">
+    <div className="relative w-full overflow-hidden rounded-lg border bg-muted">
       <Image
         src={src}
         alt={alt}

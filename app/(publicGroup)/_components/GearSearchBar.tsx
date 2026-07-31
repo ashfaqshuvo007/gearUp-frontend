@@ -98,7 +98,7 @@ export function GearsSearchBar({
           onValueChange={(value) => setField(value as SearchField)}
         >
           <SelectTrigger
-            className="w-[140px] shrink-0 rounded-none border-0 border-r border-input bg-muted/40 focus:ring-0 focus:ring-offset-0"
+            className="shrink-0 rounded-none border-0 border-r border-input bg-muted/40 focus:ring-0 focus:ring-offset-0"
             aria-label="Search field"
           >
             <SelectValue />

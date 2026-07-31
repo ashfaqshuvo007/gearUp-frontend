@@ -106,7 +106,7 @@ export function FilterSidebar() {
   const currentAvailability = searchParams.get("availability");
 
   return (
-    <aside className="w-64 flex-shrink-0 border-r border-border bg-background p-6">
+    <aside className="w-64 border-r border-border bg-background p-6">
       <div className="space-y-8">
         {/* Category Filter */}
         <div>

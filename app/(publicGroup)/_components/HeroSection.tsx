@@ -19,7 +19,7 @@ export function HeroSection() {
         </div>
 
         <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 text-balance">
-          Discover <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary via-accent to-primary">Premium Gears</span>
+          Discover <span className="text-transparent bg-clip-text from-primary via-accent to-primary">Premium Gears</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-muted-foreground mb-12 text-balance max-w-2xl mx-auto">
