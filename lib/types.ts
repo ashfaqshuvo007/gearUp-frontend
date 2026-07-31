@@ -85,6 +85,14 @@ export interface GearProvider {
   updatedAt: string;
 }
 
+export type IOrderPayload = {
+  rentFrom: string;
+  rentTill: string;
+  orderItemId: string;
+  orderQty: number;
+  price: number;
+};
+
 export interface GearDetailData {
   id: string;
   name: string;

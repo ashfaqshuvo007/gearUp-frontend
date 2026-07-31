@@ -5,6 +5,8 @@ import { GearImage } from "./GearImage";
 import { GearSpecifications } from "./GearSpecfications";
 import { ProviderInfo } from "./ProviderInfo";
 import { RentNowCard } from "./RentNowCard";
+import { getMe } from "@/service/getMe";
+import EmptyOrderCard from "./EmptyOrderCard";
 
 interface GearDetailProps {
   gear: GearDetailData;
@@ -12,6 +14,7 @@ interface GearDetailProps {
 }
 
 const GearDetails = async ({ gear, onRentRequest }: GearDetailProps) => {
+  const user = await getMe()
     const specifications: GearSpecification[] = [
         {
         label: "Brand",
@@ -60,16 +63,20 @@ const GearDetails = async ({ gear, onRentRequest }: GearDetailProps) => {
 
       {/* Right: sticky rent-now panel */}
       <div className="lg:col-span-1">
-        <div className="lg:sticky lg:top-20">
-          {gear.quantity > 1 ? (
-          <RentNowCard
-            pricePerDay={gear.pricePerDay}
-            unavailableDates={gear.unavailableDates}
-            onRentRequest={onRentRequest}
-          />
-          ) : ""
-          }
-        </div>
+        {user.success ? (
+          <div className="lg:sticky lg:top-20">
+            {gear.quantity > 1 ? (
+            <RentNowCard
+              orderItemId={gear.id}
+              pricePerDay={gear.pricePerDay}
+              unavailableDates={gear.unavailableDates}
+              onRentRequest={onRentRequest}
+            />
+            ) : ""
+            }
+          </div>
+          ) : <EmptyOrderCard/>
+        }
       </div>
     </div>
   );

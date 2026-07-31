@@ -7,9 +7,10 @@ export const GearImage = ({ src, alt }: { src: string; alt: string }) => {
       <Image
         src={src}
         alt={alt}
-        fill
+        width={800}
+        height={800}
         priority
-        sizes="(min-width: 1024px) 66vw, 100vw"
+        // sizes="(min-width: 1024px) 66vw, 100vw"
         className="object-cover"
       />
     </div>
