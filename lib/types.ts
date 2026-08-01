@@ -1,3 +1,6 @@
+import { LucideProps } from "lucide-react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+
 type IReview = {
   id: string;
   customerId: string;
@@ -85,6 +88,14 @@ export interface GearProvider {
   updatedAt: string;
 }
 
+export type IOrderPayload = {
+  rentFrom: string;
+  rentTill: string;
+  orderItemId: string;
+  orderQty: number;
+  price: number;
+};
+
 export interface GearDetailData {
   id: string;
   name: string;
@@ -99,3 +110,102 @@ export interface GearDetailData {
   /** Dates that cannot be booked (already reserved). */
   unavailableDates?: Date[];
 }
+
+export type ISidebarItem = {
+  label: string;
+  href: string;
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >;
+};
+
+export type IOrderItem = {
+  id: string;
+  name: string;
+  description: string;
+  brand: string;
+  quantity: number;
+  price: string;
+  categoryName: string;
+  providerId: string;
+  status: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IPayment = {
+  id: string;
+  rentalOrderid: string;
+  transactionId: string;
+  userid: string;
+  stripeCustomerId: string;
+  amount: string;
+  currency: string;
+  method: string;
+  provider: string;
+  status: string;
+  paidAt: string;
+};
+
+export type ICustomerUser = {
+  id: string;
+  name: string;
+  email: string;
+  status: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IRentalOrderData = {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  total: string;
+  rentFrom: string;
+  rentTill: string;
+  customerId: string;
+  orderItemId: string;
+  providerId: string;
+  createdAt: string;
+  updatedAt: string;
+  customer: ICustomerUser;
+  payment: IPayment;
+  orderItems: IOrderItem[];
+};
+
+export type IUserRentalOrders = {
+  success: string;
+  message: string;
+  data: IRentalOrderData[];
+};
+
+export type ISingleRentalOrder = {
+  id: string;
+  status: "PENDING" | "ACTIVE" | "COMPLETED" | "CANCELED" | string;
+  total: string;
+  rentFrom: string;
+  rentTill: string;
+  createdAt: string;
+  customer: {
+    name: string;
+    email: string;
+  };
+  payment: {
+    transactionId: string;
+    amount: string;
+    currency: string;
+    method: string;
+    status: string;
+    paidAt: string;
+  };
+  orderItems: Array<{
+    id: string;
+    name: string;
+    brand: string;
+    quantity: number;
+    price: string;
+    categoryName: string;
+  }>;
+};
