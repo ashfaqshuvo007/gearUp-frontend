@@ -4,6 +4,7 @@ import { getGearById } from "../../_actions/getGearById";
 import GearDetails from "../../_components/GearDetails";
 import { notFound } from "next/navigation";
 import { getProviderDetails } from "@/service/getProviderDetails";
+import { Toaster } from "@/components/ui/sonner";
 
 interface GearDetailProps {
   params: Promise<{id: string}>;

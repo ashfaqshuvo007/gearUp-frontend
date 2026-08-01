@@ -18,9 +18,10 @@ import {
   startOfDay,
 } from "date-fns";
 import { CalendarIcon } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useActionState, useEffect, useMemo, useState } from "react";
 import { DateRange } from "react-day-picker";
-import { createRentalOrder } from "../_actions/createRentalOrder";
+import { createRentalOrder, RentalOrderState } from "../_actions/createRentalOrder";
+import { toast } from "sonner";
 
 export const RentNowCard = ({
   orderItemId,
@@ -41,8 +42,19 @@ export const RentNowCard = ({
 }) => {
   const [range, setRange] = useState<DateRange | undefined>();
   const [open, setOpen] = useState(false);
-  const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const initialState: RentalOrderState = null;
+
+  const [state, formAction, isPending] = useActionState(createRentalOrder, initialState);
+
+  useEffect(() => {
+    if (!state) return;
+    if (!state.success) {
+      toast.error(state.message ?? "Something went wrong.");
+    } else if (state.message) {
+      toast.success(state.message);
+    }
+  }, [state]);
 
   const days = useMemo(() => {
     if (!range?.from || !range?.to) return 0;
@@ -63,7 +75,6 @@ export const RentNowCard = ({
 
   const handleSelect = (selected: DateRange | undefined) => {
     setRange(selected);
-    setError(null);
     if (selected?.from && selected?.to) {
       setOpen(false);
     }
@@ -80,7 +91,7 @@ export const RentNowCard = ({
         </div>
       </CardHeader>
 
-      <form action={createRentalOrder}>
+      <form action={formAction}>
         {/* Hidden inputs mirror the date range into the form's FormData,
             since the Calendar/Popover UI manages selection via React state
             rather than native form controls. */}
@@ -153,8 +164,6 @@ export const RentNowCard = ({
               </div>
             </div>
           )}
-
-          {error && <p className="text-sm text-destructive">{error}</p>}
         </CardContent>
 
         <CardFooter>
@@ -162,9 +171,9 @@ export const RentNowCard = ({
             type="submit"
             className="w-full"
             size="lg"
-            disabled={!range?.from || !range?.to || pending}
+            disabled={!range?.from || !range?.to || isPending}
           >
-            {pending ? "Submitting…" : "Rent Now"}
+            {isPending ? "Submitting…" : "Rent Now"}
           </Button>
         </CardFooter>
       </form>

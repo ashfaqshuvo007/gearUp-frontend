@@ -1,20 +1,27 @@
 "use server";
 
-import { verifyToken } from "@/lib/utils";
-import { getNewAccessToken } from "@/service/refreshToken";
-import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
-import { toast } from "sonner";
+import { redirect } from "next/navigation";
 
-export const createRentalOrder = async (formData: FormData) => {
+export type RentalOrderState = {
+  success: boolean;
+  message?: string;
+} | null;
+
+export const createRentalOrder = async (
+  _prevState: RentalOrderState,
+  formData: FormData,
+): Promise<RentalOrderState> => {
   const fromRaw = formData.get("from");
   const toRaw = formData.get("to");
   const daysRaw = formData.get("days");
   const totalRaw = formData.get("total");
 
   if (!fromRaw || !toRaw || !daysRaw || !totalRaw) {
-    toast.error("Please select a rental date range.");
-    return;
+    return {
+      success: false,
+      message: "Please select a rental data range.",
+    };
   }
 
   const from = new Date(fromRaw as string);
@@ -38,50 +45,22 @@ export const createRentalOrder = async (formData: FormData) => {
   };
 
   if (Number.isNaN(parsedDays) || Number.isNaN(parsedTotal)) {
-    toast.error(
-      "Something went wrong calculating the total. Please reselect your dates.",
-    );
-    return;
+    return {
+      success: false,
+      message:
+        "Something went wrong calculating the total. Please reselect your dates.",
+    };
   }
 
   const cookieStore = await cookies();
 
   let accessToken = cookieStore.get("accessToken")?.value || null;
-  const refreshToken = cookieStore.get("refreshToken")?.value || null;
 
-  console.log(accessToken);
-  if (!accessToken && !refreshToken) {
-    // throw new Error("User Not Logged In!");
-
+  if (!accessToken) {
     return {
       success: false,
       message: "User not logged in!",
     };
-  }
-
-  const decodedAccessToken = accessToken
-    ? verifyToken(accessToken, process.env.JWT_ACCESS_SECRET as string)
-    : null;
-
-  const decodedRefreshToken = refreshToken
-    ? verifyToken(refreshToken, process.env.JWT_REFRESH_SECRET as string)
-    : null;
-
-  if (!decodedAccessToken?.success && decodedRefreshToken?.success) {
-    //access token has expired but refresh token is valid, get new access token from backend
-    const result = await getNewAccessToken();
-
-    if (result.success) {
-      const newAccessToken = result.data.accessToken;
-
-      cookieStore.set("accessToken", newAccessToken, {
-        httpOnly: true,
-        maxAge: 60 * 60 * 24,
-        sameSite: "lax",
-      });
-
-      accessToken = newAccessToken;
-    }
   }
 
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/rentals`, {
@@ -97,10 +76,15 @@ export const createRentalOrder = async (formData: FormData) => {
 
   const result = await res.json();
 
-  if (result.success) {
-    revalidateTag("my-rentals", {
-      expire: 0,
-    });
+  if (!result.success) {
+    return {
+      success: false,
+      message: result.message || "Could not place a rental order.",
+    };
+  }
+
+  if (result.data?.checkoutUrl) {
+    redirect(result.data.checkoutUrl);
   }
 
   return result;
