@@ -1,9 +1,11 @@
-import React from 'react'
+import AdminDashboardCards from "./_components/AdminDashboardCards";
 
-const AdminDashboardPage = () => {
+const AdminDashboardPage = async () => {
   return (
-    <div>AdminDashboardPage</div>
-  )
-}
+    <div>
+      <AdminDashboardCards />
+    </div>
+  );
+};
 
-export default AdminDashboardPage
+export default AdminDashboardPage;
