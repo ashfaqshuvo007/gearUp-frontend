@@ -32,15 +32,15 @@ const userMenuItems = [
 
 
 export function Navbar({user} : NavbarProps) {
-    const router = useRouter()
+  const router = useRouter()
   const handleUserMenuAction = async (action: string) => {
-
     if(action === "dashboard" ){
-      if(user.data.role === "USER"){
+
+      if(user.data.role === "CUSTOMER"){
         router.push("/dashboard")
       }
-      else if(user.data.role === "AUTHOR"){
-        router.push("/author-dashboard")
+      else if(user.data.role === "PROVIDER"){
+        router.push("/provider-dashboard")
       }
       else if(user.data.role === "ADMIN"){
         router.push("/admin-dashboard")
