@@ -1,15 +1,20 @@
 import { ISidebarItem } from "@/lib/types";
-import { FileText, LayoutDashboard } from "lucide-react";
+import { FileText, LayoutDashboard, Settings } from "lucide-react";
 
 export const PROVIDER_SIDEBAR_ITEMS: ISidebarItem[] = [
   {
     label: "Dashboard",
-    href: "/author-dashboard",
+    href: "/provider-dashboard",
     icon: LayoutDashboard,
   },
   {
-    label: "My Posts",
-    href: "/author-dashboard/my-posts",
+    label: "My Orders",
+    href: "/provider-dashboard/orders",
     icon: FileText,
+  },
+  {
+    label: "My Gear items",
+    href: "/provider-dashboard/gears",
+    icon: Settings,
   },
 ];

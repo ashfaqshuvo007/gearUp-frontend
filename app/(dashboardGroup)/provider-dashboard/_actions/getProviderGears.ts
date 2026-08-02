@@ -3,7 +3,7 @@ import { verifyToken } from "@/lib/utils";
 import { JwtPayload } from "jsonwebtoken";
 import { cookies } from "next/headers";
 
-export const getRentalStats = async () => {
+export const getProviderGears = async () => {
   const cookieStore = await cookies();
 
   const accessToken = cookieStore.get("accessToken")?.value || null;
@@ -12,14 +12,6 @@ export const getRentalStats = async () => {
     process.env.JWT_SECRET as string,
   );
 
-  const userRole = (decodedAccessToken.data as JwtPayload).role;
-
-  if (userRole != "ADMIN") {
-    return {
-      success: false,
-      message: "Unauthrized",
-    };
-  }
   if (!accessToken) {
     return {
       success: false,
@@ -27,8 +19,18 @@ export const getRentalStats = async () => {
     };
   }
 
+  const userRole = (decodedAccessToken.data as JwtPayload).role;
+  const userId = (decodedAccessToken.data as JwtPayload).id;
+
+  if (userRole != "PROVIDER") {
+    return {
+      success: false,
+      message: "Unauthrized",
+    };
+  }
+
   const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/providers/orders`,
+    `${process.env.BACKEND_API_URL}/api/providers/gears`,
     {
       method: "GET",
       headers: {
@@ -37,8 +39,8 @@ export const getRentalStats = async () => {
       },
       cache: "force-cache",
       next: {
-        revalidate: 60 * 20,
-        tags: ["total-rentals"],
+        revalidate: 60 * 10,
+        tags: ["provider-gears-" + userId],
       },
     },
   );

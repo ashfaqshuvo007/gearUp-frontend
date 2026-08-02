@@ -181,6 +181,26 @@ export type IUserRentalOrders = {
   data: IRentalOrderData[];
 };
 
+export type IProviderSingleOrder = {
+  id: string;
+  name: string;
+  description?: string;
+  status: string;
+  total: string;
+  rentFrom: string;
+  rentTill: string;
+  orderItemId: string;
+  providerId: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type IProviderRentalOrders = {
+  success: string;
+  message: string;
+  data: IProviderSingleOrder[];
+};
+
 export type ISingleRentalOrder = {
   id: string;
   status: "PENDING" | "ACTIVE" | "COMPLETED" | "CANCELED" | string;
@@ -209,3 +229,14 @@ export type ISingleRentalOrder = {
     categoryName: string;
   }>;
 };
+
+export const OrderStatus = {
+  PENDING_PAYMENT: "PENDING_PAYMENT",
+  CONFIRMED: "CONFIRMED",
+  PICKEDUP: "PICKEDUP",
+  RETURNED: "RETURNED",
+  CANCELED: "CANCELED",
+  FAILED: "FAILED",
+} as const;
+
+export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
