@@ -1,11 +1,13 @@
 // app/rentals/[id]/page.tsx
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { format, differenceInCalendarDays } from "date-fns";
 import { cn } from "@/lib/utils";
-import { IOrderItem } from "@/lib/types";
 import { getRentalOrder } from "@/app/(dashboardGroup)/dashboard/rentals/_actions/rentalActions";
+import { FormDialog } from "../../_components/FormDialog";
+import { Button } from "@/components/ui/button";
+import { UpdateStatusForm } from "../../_components/UpdateStatusForm";
+import { updateOrderStatus } from "../../_actions/updateOrderStatus";
 
 type RentalOrder = {
   id: string;
@@ -43,7 +45,7 @@ const statusStyles: Record<string, string> = {
   CANCELED: "bg-red-50 text-red-700 border-red-200",
 };
 
-export default async function RentalOrderPage({
+export default async function AdminRentalOrderPage({
   params,
 }: {
   params: Promise<{ id: string }>;
@@ -73,6 +75,27 @@ export default async function RentalOrderPage({
           >
             {order.status}
           </Badge>
+          <FormDialog
+            trigger={
+              <Button variant="default" size="lg" className="ml-4">
+                Edit status
+              </Button>
+            }
+            title="Update order status"
+            description={`Change the order status for ${order.id}.`}
+          >
+            <UpdateStatusForm
+              id={order.id}
+              currentStatus={order.status}
+              statusOptions={[
+                "PENDING_PAYMENT",
+                "ACTIVE",
+                "COMPLETED",
+                "CANCELED",
+              ]}
+              action={updateOrderStatus}
+            />
+          </FormDialog>
         </div>
       </div>
 
@@ -84,8 +107,8 @@ export default async function RentalOrderPage({
         <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-8 text-sm">
           <div>
             <p className="text-muted-foreground">Customer</p>
-            <p className="font-medium">{order.customer.name}</p>
-            <p className="text-muted-foreground">{order.customer.email}</p>
+            {/* <p className="font-medium">{order.customer.name}</p>
+            <p className="text-muted-foreground">{order.customer.email}</p> */}
           </div>
 
           <div>
@@ -114,8 +137,6 @@ export default async function RentalOrderPage({
           </div>
         </CardContent>
       </Card>
-
-      {/* Section 2: Order items */}
       {/* Section 2: Rental item */}
       <Card>
         <CardHeader>

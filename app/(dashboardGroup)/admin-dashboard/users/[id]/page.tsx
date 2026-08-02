@@ -1,9 +1,17 @@
 // app/dashboard/users/[id]/page.tsx
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// import { FormDialog } from "@/components/form-dialog";
+// import { UpdateStatusForm } from "@/components/update-status-form";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { getUserStats } from "../../_actions/getUserStats";
+// import { updateUserStatus } from "../../_actions/updateUserStatus";
+import { notFound } from "next/navigation";
+import { FormDialog } from "../../_components/FormDialog";
+import { UpdateStatusForm } from "../../_components/UpdateStatusForm";
+import { updateUserStatus } from "../../_actions/updateUserStatus";
 
 type User = {
   id: string;
@@ -34,14 +42,16 @@ export default async function UserPage({
 }) {
   const { id } = await params;
   const userAll = await getUserStats();
-  const user = userAll.data.find((u: any) => u.id === id);
+  const user: User | undefined = userAll.data.find((u: User) => u.id === id);
+
+  if (!user) notFound();
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-10 space-y-8">
       {/* Page heading */}
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">{user.email}</p>
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-4">
           <h1 className="text-3xl font-semibold tracking-tight">{user.name}</h1>
           <Badge
             variant="outline"
@@ -61,6 +71,22 @@ export default async function UserPage({
           >
             {user.status}
           </Badge>
+          <FormDialog
+            trigger={
+              <Button variant="default" size="lg" className="ml-4">
+                Edit status
+              </Button>
+            }
+            title="Update Gear status"
+            description={`Change the account status for ${user.name}.`}
+          >
+            <UpdateStatusForm
+              id={user.id}
+              currentStatus={user.status}
+              statusOptions={["ACTIVE", "DRAFT", "SUSPENDED"]}
+              action={updateUserStatus}
+            />
+          </FormDialog>
         </div>
       </div>
 
@@ -74,19 +100,16 @@ export default async function UserPage({
             <p className="text-muted-foreground">Email</p>
             <p className="font-medium">{user.email}</p>
           </div>
-
           <div>
             <p className="text-muted-foreground">Role</p>
             <p className="font-medium">{user.role}</p>
           </div>
-
           <div>
             <p className="text-muted-foreground">Joined</p>
             <p className="font-medium">
               {format(new Date(user.createdAt), "LLL d, y")}
             </p>
           </div>
-
           <div>
             <p className="text-muted-foreground">Last Updated</p>
             <p className="font-medium">

@@ -4,6 +4,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { getGearById } from "@/app/(publicGroup)/_actions/getGearById";
+import { FormDialog } from "../../_components/FormDialog";
+import { Button } from "@/components/ui/button";
+import { UpdateStatusForm } from "../../_components/UpdateStatusForm";
+import { updateGearStatus } from "../../_actions/updateGearStatus";
+import { getUserStats } from "../../_actions/getUserStats";
+import { IUser } from "@/lib/types";
 
 type Gear = {
   id: string;
@@ -38,6 +44,8 @@ export default async function GearItemPage({
 }) {
   const { id } = await params;
   const gear = await getGearById(id);
+  const userAll = await getUserStats();
+  const provider = userAll.data.find((u: any) => u.id === gear.data.providerId);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10 space-y-8">
@@ -58,6 +66,22 @@ export default async function GearItemPage({
           >
             {gear.data.status}
           </Badge>
+          <FormDialog
+            trigger={
+              <Button variant="default" size="lg" className="ml-4">
+                Edit status
+              </Button>
+            }
+            title="Update gear status"
+            description={`Change the gear status for ${gear.data.name}.`}
+          >
+            <UpdateStatusForm
+              id={gear.data.id}
+              currentStatus={gear.data.status}
+              statusOptions={["ACTIVE", "DRAFT", "SUSPENDED"]}
+              action={updateGearStatus}
+            />
+          </FormDialog>
         </div>
         {gear.data.description && (
           <p className="text-muted-foreground max-w-xl">
@@ -101,21 +125,19 @@ export default async function GearItemPage({
         </CardContent>
       </Card>
       {/* Section 2: Provider */}
-      {/* <Card>
+      <Card>
         <CardHeader>
           <CardTitle className="text-base">Provider</CardTitle>
         </CardHeader>
         <CardContent className="text-sm">
           <div className="flex items-center justify-between">
             <div>
-              <p className="font-medium">{gear.data.provider.name}</p>
-              <p className="text-muted-foreground">
-                {gear.data.provider.email}
-              </p>
+              <p className="font-medium">{provider.name}</p>
+              <p className="text-muted-foreground">{provider.email}</p>
             </div>
           </div>
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 }

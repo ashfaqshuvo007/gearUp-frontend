@@ -5,6 +5,7 @@ import { getUserOrders } from "../../_actions/getUserOrders";
 import { IUserRentalOrders } from "@/lib/types";
 import RentalSkeleton from "../../dashboard/rentals/_components/RentalSkeleton";
 import { getRentalStats } from "../_actions/getRentalStats";
+import { AdminRentalTable } from "../_components/AdminRentalTable";
 
 const RentalsListPage = async ({
   searchParams,
@@ -29,7 +30,7 @@ const RentalsListPage = async ({
       </div>
 
       <Suspense fallback={<RentalSkeleton />}>
-        <RentalTable {...userRentalOrders} />
+        <AdminRentalTable {...userRentalOrders} />
       </Suspense>
     </div>
   );

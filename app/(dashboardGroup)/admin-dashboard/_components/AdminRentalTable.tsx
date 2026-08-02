@@ -15,6 +15,7 @@ import { cn } from "@/lib/utils";
 import { differenceInCalendarDays } from "date-fns";
 import { UserPen } from "lucide-react";
 import Link from "next/link";
+import { getUserStats } from "../_actions/getUserStats";
 
 const statusStyles: Record<string, string> = {
   ACTIVE: "bg-emerald-50 text-emerald-700 border-emerald-200",
@@ -30,8 +31,9 @@ const paymentStatusStyles: Record<string, string> = {
   REFUNDED: "bg-blue-50 text-blue-700 border-blue-200",
 };
 
-export const RentalTable = (rentalOrderList: IUserRentalOrders) => {
+export const AdminRentalTable = async (rentalOrderList: IUserRentalOrders) => {
   const orders: IRentalOrderData[] = rentalOrderList.data;
+
   return (
     <div className="mt-4">
       <Card className="@container/card">
