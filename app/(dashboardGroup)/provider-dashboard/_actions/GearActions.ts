@@ -56,7 +56,7 @@ export const createGear = async (prevState: GearState, formData: FormData) => {
     });
   }
   revalidatePath(`/provider-dashboard/gears/`);
-  return { success: true, message: "Gear Created Successfully." };
+  return result;
 };
 
 export const updateGear = async (
@@ -100,5 +100,5 @@ export const updateGear = async (
   }
 
   revalidatePath(`/provider-dashboard/gears/${gearId}`);
-  return { success: true, message: "Gears updated Successfully." };
+  return result;
 };
