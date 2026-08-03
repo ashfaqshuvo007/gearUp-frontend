@@ -1,9 +1,11 @@
 "use server";
+
 import { verifyToken } from "@/lib/utils";
 import { JwtPayload } from "jsonwebtoken";
+import { revalidateTag } from "next/cache";
 import { cookies } from "next/headers";
 
-export const getRentalStats = async () => {
+export const getUserStats = async () => {
   const cookieStore = await cookies();
 
   const accessToken = cookieStore.get("accessToken")?.value || null;
@@ -27,29 +29,25 @@ export const getRentalStats = async () => {
     };
   }
 
-  const res = await fetch(
-    `${process.env.BACKEND_API_URL}/api/providers/orders`,
-    {
-      method: "GET",
-      headers: {
-        Authorization: `${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      cache: "force-cache",
-      next: {
-        revalidate: 60 * 20,
-        tags: ["total-rentals"],
-      },
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/admin/users`, {
+    method: "GET",
+    headers: {
+      Authorization: `${accessToken}`,
+      "Content-Type": "application/json",
     },
-  );
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 20,
+      tags: ["total-users"],
+    },
+  });
 
   const result = await res.json();
 
   if (!result.success) {
     return {
       success: false,
-      message:
-        result.message || "There is a problem. Cannot fetch your orders.",
+      message: result.message || "There is a problem. Cannot fetch Users.",
     };
   }
   return result;

@@ -4,9 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { format, differenceInCalendarDays } from "date-fns";
 import { cn } from "@/lib/utils";
 import { getRentalOrder } from "@/app/(dashboardGroup)/dashboard/rentals/_actions/rentalActions";
-import { FormDialog } from "../../_components/FormDialog";
 import { Button } from "@/components/ui/button";
-import { UpdateStatusForm } from "../../_components/UpdateStatusForm";
+import { ProviderFormDialog } from "../../_components/ProviderFormDialog";
+import { UpdateProviderStatusForm } from "../../_components/UpdateProviderOrderFrom";
 import { updateOrderStatus } from "../../_actions/updateOrderStatus";
 
 type RentalOrder = {
@@ -75,7 +75,7 @@ export default async function AdminRentalOrderPage({
           >
             {order.status}
           </Badge>
-          <FormDialog
+          <ProviderFormDialog
             trigger={
               <Button variant="default" size="lg" className="ml-4">
                 Edit status
@@ -84,7 +84,7 @@ export default async function AdminRentalOrderPage({
             title="Update order status"
             description={`Change the order status for ${order.id}.`}
           >
-            <UpdateStatusForm
+            <UpdateProviderStatusForm
               id={order.id}
               currentStatus={order.status}
               statusOptions={[
@@ -97,7 +97,7 @@ export default async function AdminRentalOrderPage({
               ]}
               action={updateOrderStatus}
             />
-          </FormDialog>
+          </ProviderFormDialog>
         </div>
       </div>
 

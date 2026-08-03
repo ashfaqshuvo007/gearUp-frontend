@@ -1,9 +1,12 @@
-import React from 'react'
+import DashboardSidebar from "../_components/DashBoardSidebar";
+import ProviderDashboardCards from "./_components/ProviderDashboardCards";
 
 const ProviderDashboardPage = () => {
   return (
-    <div>ProviderDashboardPage</div>
-  )
-}
+    <div>
+      <ProviderDashboardCards />
+    </div>
+  );
+};
 
-export default ProviderDashboardPage
+export default ProviderDashboardPage;
