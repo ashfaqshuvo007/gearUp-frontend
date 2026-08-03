@@ -102,7 +102,7 @@ export const ProviderRentalTable = async (
                   </TableCell>
                   <TableCell>{order.payment.paidAt}</TableCell> */}
                   <TableCell>
-                    <Link href={"/provider-dashboard/rentals/" + order.id}>
+                    <Link href={"/provider-dashboard/orders/" + order.id}>
                       <UserPen />
                     </Link>
                   </TableCell>

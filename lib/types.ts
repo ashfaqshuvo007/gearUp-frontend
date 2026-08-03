@@ -240,3 +240,22 @@ export const OrderStatus = {
 } as const;
 
 export type OrderStatus = (typeof OrderStatus)[keyof typeof OrderStatus];
+
+export const ActiveStatus = {
+  ACTIVE: "ACTIVE",
+  SUSPENDED: "SUSPENDED",
+  DRAFT: "DRAFT",
+} as const;
+
+export type ActiveStatus = (typeof ActiveStatus)[keyof typeof ActiveStatus];
+
+export type IGearRequest = {
+  id?: string;
+  name: string;
+  description: string;
+  brand: string;
+  categoryName: string;
+  quantity: number;
+  price: number;
+  status: ActiveStatus;
+};

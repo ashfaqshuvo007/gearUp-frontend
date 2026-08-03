@@ -13,6 +13,7 @@ import { OrderStatus } from "@/lib/types";
 const ProviderDashboardCards = async () => {
   const rentals = await getProviderOrders();
   const pendingRentals = await getProviderOrders(OrderStatus.PENDING_PAYMENT);
+  const confirmedRentals = await getProviderOrders(OrderStatus.CONFIRMED);
   const gears = await getProviderGears();
 
   return (
@@ -48,6 +49,19 @@ const ProviderDashboardCards = async () => {
             <CardDescription>Pending Orders</CardDescription>
             <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
               {Object.keys(pendingRentals.data).length}
+            </CardTitle>
+          </CardHeader>
+          <CardFooter className="flex-col items-start gap-1.5 text-sm">
+            <div className="text-muted-foreground">
+              Order pending for response.
+            </div>
+          </CardFooter>
+        </Card>
+        <Card className="@container/card">
+          <CardHeader>
+            <CardDescription>Confirmed Orders</CardDescription>
+            <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
+              {Object.keys(confirmedRentals.data).length}
             </CardTitle>
           </CardHeader>
           <CardFooter className="flex-col items-start gap-1.5 text-sm">
