@@ -10,7 +10,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { IUser } from "@/lib/types";
 
-const DashboardCards = (user: IUser) => {
+const DashboardCards = () => {
   return (
     <div>
       <div className="grid grid-cols-2 gap-4 px-4 mt-4">
